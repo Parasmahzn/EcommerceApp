@@ -9,6 +9,21 @@
             _http = http;
         }
         public List<Product> Products { get; set; } = new List<Product>();
+
+        public async Task<ServiceResponse<Product>> GetProduct(int productId)
+        {
+
+            var result = await _http.GetFromJsonAsync<ServiceResponse<Product>>($"api/product/{productId}");
+            if (result != null && result.Data != null)
+                return result;
+            else
+                return new ServiceResponse<Product>()
+                {
+                    Success = false,
+                    Message = "Sorry Product Not Found"
+                };
+        }
+
         public async Task GetProducts()
         {
             var result =
