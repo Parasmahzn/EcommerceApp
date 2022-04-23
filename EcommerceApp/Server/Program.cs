@@ -1,4 +1,5 @@
 global using EcommerceApp.Shared;
+global using EcommerceApp.Shared.Dto;
 global using Microsoft.EntityFrameworkCore;
 global using EcommerceApp.Server.Data;
 global using EcommerceApp.Server.Services.ProductService;

@@ -37,10 +37,10 @@ namespace EcommerceApp.Server.Controllers
         }
 
         [HttpGet]
-        [Route("search/{searchText}")]
-        public async Task<ActionResult<ServiceResponse<List<Product>>>> SearchProducts(string searchText)
+        [Route("search/{searchText}/{page}")]
+        public async Task<ActionResult<ServiceResponse<ProductSearchDTO>>> SearchProducts(string searchText, int page = 1)
         {
-            var result = await _productService.SearchProducts(searchText);
+            var result = await _productService.SearchProducts(searchText, page);
             return Ok(result);
         }
 

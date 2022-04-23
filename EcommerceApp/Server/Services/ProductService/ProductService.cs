@@ -100,11 +100,27 @@
             };
         }
 
-        public async Task<ServiceResponse<List<Product>>> SearchProducts(string searchText)
+        public async Task<ServiceResponse<ProductSearchDTO>> SearchProducts(string searchText, int page)
         {
-            var response = new ServiceResponse<List<Product>>
+            var pageResult = 2f;
+            var pageCount = Math.Ceiling((await FindProductBySearchText(searchText)).Count / pageResult);
+
+            var products = await _context.Products
+                                         .Where(p => p.Title.ToLower().Contains(searchText.ToLower())
+                                         || p.Description.ToLower().Contains(searchText.ToLower()))
+                                         .Include(p => p.Variants)
+                                         .Skip((page - 1) * (int)pageResult)
+                                         .Take((int)pageResult)
+                                         .ToListAsync();
+
+            var response = new ServiceResponse<ProductSearchDTO>
             {
-                Data = await FindProductBySearchText(searchText)
+                Data = new ProductSearchDTO
+                {
+                    Products = products,
+                    CurrentPage = page,
+                    Pages = (int)pageCount
+                }
             };
             return response;
         }
