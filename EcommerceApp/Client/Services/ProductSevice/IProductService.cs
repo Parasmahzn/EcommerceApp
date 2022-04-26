@@ -5,9 +5,9 @@
         event Action ProductsChanged;
         List<Product> Products { get; set; }
         string Message { get; set; }
-        int currentPage { get; set; }
-        int pageCount { get; set; }
-        string lastSearchText { get; set; }
+        int CurrentPage { get; set; }
+        int PageCount { get; set; }
+        string LastSearchText { get; set; }
         Task GetProducts(string? CategoryUrl = null);
         Task<ServiceResponse<Product>> GetProduct(int productId);
         Task SearchProducts(string searchText,int page);

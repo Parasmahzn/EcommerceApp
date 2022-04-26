@@ -11,9 +11,9 @@
         public List<Product> Products { get; set; } = new List<Product>();
         public string Message { get; set; } = "Loading products...";
 
-        public int currentPage { get; set; } = 1;
-        public int pageCount { get; set; } = 0;
-        public string lastSearchText { get; set; } = string.Empty;
+        public int CurrentPage { get; set; } = 1;
+        public int PageCount { get; set; } = 0;
+        public string LastSearchText { get; set; } = string.Empty;
 
         public event Action ProductsChanged;
 
@@ -40,12 +40,11 @@
             if (result != null && result.Data != null)
                 Products = result.Data;
 
-            currentPage = 1;
-            pageCount = 0;
+            CurrentPage = 1;
+            PageCount = 0;
             if (Products.Count == 0)
-            {
                 Message = "No products found.";
-            }
+
             ProductsChanged.Invoke();
         }
 
@@ -57,12 +56,13 @@
 
         public async Task SearchProducts(string searchText, int page)
         {
+            LastSearchText = searchText;
             var result = await _http.GetFromJsonAsync<ServiceResponse<ProductSearchDTO>>($"api/product/search/{searchText}/{page}");
             if (result != null && result.Data != null)
             {
                 Products = result.Data.Products;
-                currentPage = result.Data.CurrentPage;
-                pageCount = result.Data.Pages;
+                CurrentPage = result.Data.CurrentPage;
+                PageCount = result.Data.Pages;
             }
 
             if (Products.Count == 0)
